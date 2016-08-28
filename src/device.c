@@ -99,7 +99,7 @@ Device* open_device(const char* dev)
 
 bool find_keyboard_device(Device** dst_device)
 {
-	PRINT(INFO, "Looking keyboard device\n");
+	PRINT(INFO, "Looking for keyboard device\n");
 	DIR* devices_dir = opendir(ROOT_DEVICES);
 	Device* device = NULL;
 	struct dirent *dir = NULL;
