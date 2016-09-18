@@ -55,8 +55,7 @@ char get_char_from_event_code(u16 code)
 
 void print(const char c)
 {
-	// this buffer acts like a volatily cache, when an invalif character is sent
-	// buffers cleanup.
+	// static buffer
 	static char buffer[MAX_BUFFER_SIZE];
 	static int counter = 0;
 
@@ -72,14 +71,14 @@ void print(const char c)
 	}
 }
 
-void event_loop(int filedescriptor)
+void event_loop(Device* device)
 {
 	int rd, event_len = 64, infinite = 1;
 	struct input_event event[event_len];
 
 	while(infinite)
 	{
-		if((rd = read(filedescriptor, event, sizeof(struct input_event) * event_len)) == -1)
+		if((rd = read(device->fd, event, sizeof(struct input_event) * event_len)) == -1)
 		{
 			PRINT(ERROR, "cannot read keyboard input events");
 			exit(1);

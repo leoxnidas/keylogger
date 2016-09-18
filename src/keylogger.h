@@ -11,9 +11,6 @@
 #include <sys/ioctl.h>
 #include <linux/input.h>
 
-
-#define KEYLOGGER_EXTERN extern
-
 #ifndef bool
 typedef unsigned char bool;
 #endif
@@ -98,21 +95,6 @@ void PRINT(MessageType type, const char* fmt, ...)
 	}                \
 }
 
-// events
-#ifndef __u16
-typedef unsigned short __u16;
-#define __u16 __u16
-#endif
-
-#ifdef __u16
-#define u16 __u16
-#endif
-
-KEYLOGGER_EXTERN char get_char_from_event_code(u16 code);
-KEYLOGGER_EXTERN void print(const char c);
-KEYLOGGER_EXTERN void event_loop(int filedescriptor);
-
-
 // device
 #ifndef ROOT_DEVICES
 #define ROOT_DEVICES "/dev/input"
@@ -124,12 +106,27 @@ typedef struct _defice {
 	int   fd;
 } Device ;
 
-KEYLOGGER_EXTERN Device* new_device();
-KEYLOGGER_EXTERN bool find_keyboard_device(Device** dst_device);
-KEYLOGGER_EXTERN Device* open_device(const char* dev);
-KEYLOGGER_EXTERN void destroy_device(Device** device);
-KEYLOGGER_EXTERN bool is_keyboard_device(const Device** dev);
-KEYLOGGER_EXTERN void close_device_handler(int status, void* device);
+Device* new_device();
+bool find_keyboard_device(Device** dst_device);
+Device* open_device(const char* dev);
+void destroy_device(Device** device);
+bool is_keyboard_device(const Device** dev);
+void close_device_handler(int status, void* device);
+
+
+// events
+#ifndef __u16
+typedef unsigned short __u16;
+#define __u16 __u16
+#endif
+
+#ifdef __u16
+#define u16 __u16
+#endif
+
+char get_char_from_event_code(u16 code);
+void print(const char c);
+void event_loop(Device*);
 
 
 #endif // KEYLOGGER_H

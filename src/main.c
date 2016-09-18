@@ -11,11 +11,12 @@ int main(int argc, char const *argv[])
 
 	if(!find_keyboard_device(&device))
 	{
-		PRINT(ERROR, "Keyboard device does not exists or you have not permissions to read it\n");
+		PRINT(ERROR, "Keyboard device does not exists" 
+					 "or you have not permissions to read it\n");
 		exit(1);
 	}
 
-	event_loop(device->fd);
+	event_loop(device);
 	
 	return 0;
 }
